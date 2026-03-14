@@ -40,3 +40,7 @@ When the user asks for a "school project" or "เธชเธฃเธธเธเนเธเธฃเธเธเธฒเธฃ"
   - `formatting_rules.md`: DXA/Twips conversions.
   - `exam_template.md`: Exam layout.
   - `project_template.md`: School project structure.
+
+## ?? Personal References
+- eferences/TeachingSchedule.md: ตารางสอนล่าสุดของดอน (อุดร มะโนเนือง)
+
