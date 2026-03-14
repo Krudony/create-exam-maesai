@@ -22,6 +22,11 @@ A specialized skill for creating professional Word documents, particularly tailo
    - Single Column, Single line spacing (1.0).
    - Standard 7-section structure (Principles, Objectives, Goals, Activities, Budget, Evaluation, Results).
 
+## ğŸš« Strict Interaction Rules
+- **NO INTERACTIVE COMMANDS**: Under no circumstances should any command be executed that waits for user input or requires interaction (e.g., pagers, prompts).
+- **FORCE NON-INTERACTIVE**: Always use flags like `--json`, `--no-pager`, or pipe to `cat` to ensure output is returned immediately and completely.
+- **TERMINATE HANGS**: If a command does not return within a reasonable time or shows any sign of being interactive, it must be cancelled immediately.
+
 ## Workflow: Exam Generation
 When the user asks for an "exam" or "à¸‚à¹‰à¸­à¸ªà¸­à¸š":
 1. Read `references/exam_template.md` for header details.
@@ -42,5 +47,5 @@ When the user asks for a "school project" or "à¸ªà¸£à¸¸à¸›à¹‚à¸„à¸£à¸‡à¸à¸²à¸£"
   - `project_template.md`: School project structure.
 
 ## ?? Personal References
-- eferences/TeachingSchedule.md: µÒÃÒ§ÊÍ¹ÅèÒÊØ´¢Í§´Í¹ (ÍØ´Ã ÁĞâ¹à¹×Í§)
+- eferences/TeachingSchedule.md: ï¿½ï¿½ï¿½Ò§ï¿½Í¹ï¿½ï¿½ï¿½ï¿½Ø´ï¿½Í§ï¿½Í¹ (ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í§)
 
