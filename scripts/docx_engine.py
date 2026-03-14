@@ -1,7 +1,7 @@
 import sys
 import os
 from docx import Document
-from docx.shared import Twips, Pt
+from docx.shared import Twips, Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
@@ -48,24 +48,40 @@ class SiSomDocxEngine:
         rFonts.set(qn('w:cs'), name)
         rPr.append(rFonts)
 
-    def add_table_header(self, subject, topic, school="โรงเรียนบ้านแม่ทราย (คุรุราษฎร์เจริญวิทย์)", time="60", total_score="30"):
-        """Create a standard school table header."""
-        # Main Title Table
-        table_h = self.doc.add_table(rows=1, cols=1)
-        table_h.style = 'Table Grid'
-        cell = table_h.cell(0, 0)
+    def add_official_header(self, subject, level, term, score, time, instruction, logo_path=None, school="โรงเรียนบ้านแม่ทราย(คุรุราษฎร์เจริญวิทย์)", area="สำนักงานเขตพื้นที่การศึกษาประถมศึกษาแพร่ เขต 1"):
+        """Create the full official school header in a table with optional logo."""
+        table = self.doc.add_table(rows=1, cols=1)
+        table.style = 'Table Grid'
+        cell = table.cell(0, 0)
         p = cell.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run = p.add_run(f"แบบทดสอบวิชา{subject}\nเรื่อง {topic}\n{school}")
+        
+        # Add Logo if provided
+        if logo_path and os.path.exists(logo_path):
+            run_logo = p.add_run()
+            run_logo.add_picture(logo_path, width=Inches(0.8)) # Standard logo size
+            p.add_run("\n") # Line break after logo
+
+        header_text = (
+            f"ข้อสอบวัดผลสัมฤทธิ์ปลายภาคเรียน  ภาคเรียนที่ {term}\n"
+            f"วิชา{subject} ชั้น{level}  คะแนนเต็ม {score} คะแนน  เวลา {time} นาที\n"
+            f"{school}  {area}\n"
+            f"*************************************************************"
+        )
+        run = p.add_run(header_text)
         run.bold = True
         
-        # Info Table (Time/Score/Name)
-        table_i = self.doc.add_table(rows=2, cols=2)
-        table_i.style = 'Table Grid'
-        table_i.cell(0, 0).text = f"เวลา  {time}  นาที"
-        table_i.cell(0, 1).text = f"คะแนนเต็ม  {total_score}  คะแนน"
-        table_i.cell(1, 0).text = "ชื่อ–สกุล  ........................................................."
-        table_i.cell(1, 1).text = "ชั้น  ........  เลขที่  ........"
+        # ตารางชื่อ-สกุล (มาก่อนคำชี้แจง)
+        table_info = self.doc.add_table(rows=1, cols=2)
+        table_info.style = 'Table Grid'
+        table_info.cell(0, 0).text = "ชื่อ–สกุล  ........................................................."
+        table_info.cell(0, 1).text = "ชั้น  ........  เลขที่  ........"
+        
+        # คำชี้แจง (มาทีหลังชื่อ-สกุล)
+        p_inst = self.doc.add_paragraph()
+        p_inst.paragraph_format.space_before = Pt(6)
+        run_inst = p_inst.add_run(f"คำชี้แจง  {instruction}")
+        run_inst.bold = True
         self.doc.add_paragraph("") # Spacer
 
     def add_answer_key_table(self, answers):

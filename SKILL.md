@@ -15,18 +15,25 @@ A specialized skill for creating professional Word documents, particularly tailo
    - Exams: **1418 Twips** (approx 2.5cm)
    - Projects: **1440 Twips** (1 inch)
 4. **Layout (Exams)**:
-   - Header is **1 Column**.
+   - Use `add_official_header` with **Screenshot_8.png** as the default logo.
+   - School Name: **โรงเรียนบ้านแม่ทราย(คุรุราษฎร์เจริญวิทย์)**.
    - Questions are **2 Columns** using a **Continuous Section Break**.
-   - **Spacing**: Space Before 4pt for Questions, Space After 4pt for last option in a question.
+   - **Tight Spacing**: Line Spacing 1.0, Space Before 0pt, Space After 0pt for options. Questions have Space Before 6pt.
 5. **Layout (Projects)**:
    - Single Column, Single line spacing (1.0).
-   - Standard 7-section structure (Principles, Objectives, Goals, Activities, Budget, Evaluation, Results).
+   - Standard 7-section structure.
 
 ## 🚫 Strict Interaction Rules
 - **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output (rich/paging).
-- **MANDATORY PIPING**: Always pipe output to `cat` or a text filter (e.g., `command | cat`) to force the tool into non-interactive mode.
-- **JSON FIRST**: If the tool supports `--json`, use it to ensure structured, non-paged data.
-- **TERMINATE HANGS**: Any command showing signs of interactivity (Interactive shell awaiting input...) must be cancelled immediately.
+- **MANDATORY REDIRECTION**: Always redirect output to a file (e.g., `command > file.txt`) to force non-interactive mode and prevent hangs.
+- **TERMINATE HANGS**: Any command showing signs of interactivity must be cancelled immediately.
+
+## Workflow: NotebookLM Integration
+When using NotebookLM to generate exams:
+1. **List Sources**: Use `notebooklm source list --notebook [ID]` to identify content.
+2. **Stable Extraction**: Use `notebooklm source fulltext [SOURCE_ID] --notebook [ID] > content.txt` to get raw data. DO NOT use `ask` for large results.
+3. **AI Reasoning**: Read the extracted text and generate high-quality Thai questions.
+4. **DOCX Build**: Use `docx_engine.py` to create the final document with the official header and tight layout.
 
 ## Workflow: Exam Generation
 When the user asks for an "exam" or "ข้อสอบ":
