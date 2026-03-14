@@ -23,9 +23,10 @@ A specialized skill for creating professional Word documents, particularly tailo
    - Standard 7-section structure (Principles, Objectives, Goals, Activities, Budget, Evaluation, Results).
 
 ## 🚫 Strict Interaction Rules
-- **NO INTERACTIVE COMMANDS**: Under no circumstances should any command be executed that waits for user input or requires interaction (e.g., pagers, prompts).
-- **FORCE NON-INTERACTIVE**: Always use flags like `--json`, `--no-pager`, or pipe to `cat` to ensure output is returned immediately and completely.
-- **TERMINATE HANGS**: If a command does not return within a reasonable time or shows any sign of being interactive, it must be cancelled immediately.
+- **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output (rich/paging).
+- **MANDATORY PIPING**: Always pipe output to `cat` or a text filter (e.g., `command | cat`) to force the tool into non-interactive mode.
+- **JSON FIRST**: If the tool supports `--json`, use it to ensure structured, non-paged data.
+- **TERMINATE HANGS**: Any command showing signs of interactivity (Interactive shell awaiting input...) must be cancelled immediately.
 
 ## Workflow: Exam Generation
 When the user asks for an "exam" or "ข้อสอบ":

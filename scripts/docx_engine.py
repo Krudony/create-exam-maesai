@@ -14,6 +14,7 @@ class SiSomDocxEngine:
         else:
             self.doc = Document()
             self._set_page_setup()
+            self._set_tight_spacing()
             self.set_font('TH SarabunPSK', font_size)
 
     def _set_page_setup(self):
@@ -25,6 +26,13 @@ class SiSomDocxEngine:
         section.bottom_margin = Twips(1418)
         section.left_margin = Twips(1418)
         section.right_margin = Twips(1418)
+
+    def _set_tight_spacing(self):
+        """Set default line spacing to Single (1.0) for tight layout."""
+        style = self.doc.styles['Normal']
+        style.paragraph_format.line_spacing = 1.0
+        style.paragraph_format.space_after = Pt(0)
+        style.paragraph_format.space_before = Pt(0)
 
     def set_font(self, name='TH SarabunPSK', size=16):
         """Set default font with Thai support."""
@@ -39,6 +47,43 @@ class SiSomDocxEngine:
         rFonts.set(qn('w:eastAsia'), name)
         rFonts.set(qn('w:cs'), name)
         rPr.append(rFonts)
+
+    def add_table_header(self, subject, topic, school="โรงเรียนบ้านแม่ทราย (คุรุราษฎร์เจริญวิทย์)", time="60", total_score="30"):
+        """Create a standard school table header."""
+        # Main Title Table
+        table_h = self.doc.add_table(rows=1, cols=1)
+        table_h.style = 'Table Grid'
+        cell = table_h.cell(0, 0)
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = p.add_run(f"แบบทดสอบวิชา{subject}\nเรื่อง {topic}\n{school}")
+        run.bold = True
+        
+        # Info Table (Time/Score/Name)
+        table_i = self.doc.add_table(rows=2, cols=2)
+        table_i.style = 'Table Grid'
+        table_i.cell(0, 0).text = f"เวลา  {time}  นาที"
+        table_i.cell(0, 1).text = f"คะแนนเต็ม  {total_score}  คะแนน"
+        table_i.cell(1, 0).text = "ชื่อ–สกุล  ........................................................."
+        table_i.cell(1, 1).text = "ชั้น  ........  เลขที่  ........"
+        self.doc.add_paragraph("") # Spacer
+
+    def add_answer_key_table(self, answers):
+        """Create a grid table for answer keys (5 columns)."""
+        self.doc.add_section(WD_SECTION.NEW_PAGE)
+        self.doc.add_paragraph("-" * 80)
+        p = self.doc.add_paragraph("ส่วนที่ 2  เฉลยข้อสอบ (Answer Key)")
+        p.runs[0].bold = True
+        
+        num_ans = len(answers)
+        rows = (num_ans + 4) // 5
+        table = self.doc.add_table(rows=rows, cols=5)
+        table.style = 'Table Grid'
+        
+        for i, ans in enumerate(answers):
+            row = i // 5
+            col = i % 5
+            table.cell(row, col).text = f"{i+1}. {ans}"
 
     def set_2_columns_continuous(self):
         """Add a continuous section break and set to 2 columns."""
