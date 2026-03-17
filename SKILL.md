@@ -47,8 +47,10 @@ To use this skill successfully, the host machine MUST have:
      - Visible Grid Borders for easy cutting.
 
 ## 🚫 Strict Interaction Rules
-- **OPTIONAL ANSWER SHEETS**: DO NOT generate an answer sheet (using `answer_sheet_engine.py`) unless the user explicitly asks for it (e.g., "ทำกระดาษคำตอบด้วย"). By default, only generate the exam/document requested.
-- **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output (rich/paging).
+- **THAI ENCODING (WINDOWS)**: Always use `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8` before shell operations.
+- **MANDATORY UTF8 REDIRECTION**: NEVER use `>` for file redirection on Windows as it breaks Thai characters. ALWAYS use `| Out-File -Encoding UTF8` (e.g., `notebooklm fulltext ... | Out-File -Encoding UTF8 content.txt`).
+- **OPTIONAL ANSWER SHEETS**: DO NOT generate an answer sheet (using `answer_sheet_engine.py`) unless the user explicitly asks for it.
+- **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output.
 - **MANDATORY REDIRECTION**: Always redirect output to a file (e.g., `command > file.txt`) to force non-interactive mode and prevent hangs.
 - **TERMINATE HANGS**: Any command showing signs of interactivity must be cancelled immediately.
 
@@ -70,6 +72,7 @@ To handle multiple Google accounts without overwriting login states:
 When the user asks for an "exam" or "ข้อสอบ":
 1. Read `references/exam_template.md` for header details.
 2. Use `scripts/docx_engine.py` to generate the document.
+3. **MANDATORY**: Call `engine.set_2_columns_continuous()` immediately after `add_official_header()` to ensure the 2-column layout for questions.
 
 ## Workflow: School Project Generation
 When the user asks for a "school project" or "สรุปโครงการ":
