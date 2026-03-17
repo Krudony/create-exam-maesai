@@ -72,6 +72,7 @@ When the user asks for a "school project" or "สรุปโครงการ"
 - **Scripts**: 
   - `docx_engine.py`: Exam driver.
   - `project_engine.py`: School project driver (High precision spacing).
+  - `answer_sheet_engine.py`: 4-in-1 Eco Mode answer sheet generator.
 - **References**:
   - `formatting_rules.md`: DXA/Twips conversions.
   - `exam_template.md`: Exam layout.
