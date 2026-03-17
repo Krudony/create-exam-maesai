@@ -47,6 +47,7 @@ To use this skill successfully, the host machine MUST have:
      - Visible Grid Borders for easy cutting.
 
 ## 🚫 Strict Interaction Rules
+- **OPTIONAL ANSWER SHEETS**: DO NOT generate an answer sheet (using `answer_sheet_engine.py`) unless the user explicitly asks for it (e.g., "ทำกระดาษคำตอบด้วย"). By default, only generate the exam/document requested.
 - **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output (rich/paging).
 - **MANDATORY REDIRECTION**: Always redirect output to a file (e.g., `command > file.txt`) to force non-interactive mode and prevent hangs.
 - **TERMINATE HANGS**: Any command showing signs of interactivity must be cancelled immediately.
@@ -57,6 +58,13 @@ When using NotebookLM to generate exams:
 2. **Stable Extraction**: Use `notebooklm source fulltext [SOURCE_ID] --notebook [ID] > content.txt` to get raw data. DO NOT use `ask` for large results.
 3. **AI Reasoning**: Read the extracted text and generate high-quality Thai questions.
 4. **DOCX Build**: Use `docx_engine.py` to create the final document with the official header and tight layout.
+
+### 💡 Advanced: Multi-Account Management
+To handle multiple Google accounts without overwriting login states:
+- **Separate Storage**: Use the `--storage` flag to specify a custom JSON file for each account.
+- **Example (Account 1)**: `notebooklm --storage %USERPROFILE%\.notebooklm\acc1.json list`
+- **Example (Account 2)**: `notebooklm --storage %USERPROFILE%\.notebooklm\acc2.json login`
+- **Tip**: This prevents "Authentication expired" errors when switching between school and personal emails.
 
 ## Workflow: Exam Generation
 When the user asks for an "exam" or "ข้อสอบ":
@@ -81,3 +89,4 @@ When the user asks for a "school project" or "สรุปโครงการ"
 ## ?? Personal References
 - eferences/TeachingSchedule.md: ���ҧ�͹����ش�ͧ�͹ (�ش� �����ͧ)
 
+`n6. **Layout (Answer Sheets)**:`n   - **4-in-1 Eco Mode (PERFECT Edition)**:`n     - **Goal**: 4 sheets per A4 page (2x2 grid), strictly on ONE page.`n     - **Dimensions**: Page Margins 0.4cm, Table Cell Height 14.3cm, Grid Row Height 0.48cm.`n     - **Design**: NO LOGO, Centered Alignment, Only Subject field, TH SarabunPSK font.
