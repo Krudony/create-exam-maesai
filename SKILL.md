@@ -11,17 +11,33 @@ A specialized skill for creating professional Word documents, particularly tailo
 ## Core Rules
 1. **Font**: Always use **TH SarabunPSK 16pt** for general content, exams, and projects (18pt for titles).
 2. **Page**: Always use **A4** (11906 x 16838 Twips).
-3. **Margins**: 
+3. **Engine**: Use **SiSomDocxEngine** class from `scripts/docx_engine.py`.
+4. **Margins**: 
    - Exams: **1418 Twips** (approx 2.5cm)
    - Projects: **1440 Twips** (1 inch)
 4. **Layout (Exams)**:
-   - Use `add_official_header` with **Screenshot_8.png** as the default logo.
+   - **Section 1 (Header)**: Always **1 Column** (Full width). Use `add_official_header` with **Screenshot_8.png** as the default logo.
+   - **Section 2 (Body)**: Use a **Continuous Section Break** to start **2 Columns** for the questions.
+   - **Section 3 (Answer Key)**: Reset to **1 Column** on a new page. MUST include two parts:
+     1. **Compact Table**: A 5-column grid summary (e.g., 1. ก, 2. ข, 3. ง...).
+     2. **Academic Explanations**: Detailed rationale for each answer based on grammar rules, vocabulary, or logic.
    - School Name: **โรงเรียนบ้านแม่ทราย(คุรุราษฎร์เจริญวิทย์)**.
-   - Questions are **2 Columns** using a **Continuous Section Break**.
    - **Tight Spacing**: Line Spacing 1.0, Space Before 0pt, Space After 0pt for options. Questions have Space Before 6pt.
 5. **Layout (Projects)**:
    - Single Column, Single line spacing (1.0).
    - Standard 7-section structure.
+
+6. **Layout (Answer Sheets)**:
+   - **4-in-1 Eco Mode**: 1 Page A4 MUST contain 4 sheets (2x2 grid).
+   - **Strict Constraints**: 
+     - Page Margins: 0.4cm all sides.
+     - Master Table Row Height: Exactly 14.3cm.
+     - Answer Grid Row Height: Exactly 0.48cm (Expanded for easy marking).
+   - **Design**:
+     - No "Topic" field (Only "Subject").
+     - Optional Logo (Default: No Logo for max space).
+     - Centered Alignment for all text and the grid table.
+     - Visible Grid Borders for easy cutting.
 
 ## 🚫 Strict Interaction Rules
 - **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output (rich/paging).
