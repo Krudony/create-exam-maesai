@@ -8,6 +8,13 @@ description: "Professional Word (.docx) document management. Specialized in A4 s
 ## Overview
 A specialized skill for creating professional Word documents, particularly tailored for educational exams and school reports.
 
+## 🛠️ System Requirements (MANDATORY)
+To use this skill successfully, the host machine MUST have:
+1. **Python 3.x installed**: All document generation logic runs via Python engines.
+2. **Required Libraries**: Run `pip install python-docx docxtpl` to install the necessary modules.
+3. **TH SarabunPSK Font**: The documents use this font exclusively. If not installed on the system, the layout will break.
+4. **School Logo**: Ensure the `assets/Screenshot_8.png` file exists (included in this skill).
+
 ## Core Rules
 1. **Font**: Always use **TH SarabunPSK 16pt** for general content, exams, and projects (18pt for titles).
 2. **Page**: Always use **A4** (11906 x 16838 Twips).
