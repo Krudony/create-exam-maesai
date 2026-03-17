@@ -8,17 +8,6 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-def set_cell_margins(cell, top=0, start=0, bottom=0, end=0):
-    tc = cell._tc
-    tcPr = tc.get_or_add_tcPr()
-    tcMar = OxmlElement('w:tcMar')
-    for m in [('top', top), ('start', start), ('bottom', bottom), ('end', end)]:
-        node = OxmlElement(f'w:{m[0]}')
-        node.set(qn('w:w'), str(m[1]))
-        node.set(qn('w:type'), 'dxa')
-        tcMar.append(node)
-    tcPr.append(tcMar)
-
 def set_font(run, size=14, bold=False):
     run.font.name = 'TH SarabunPSK'
     r = run._element
@@ -44,69 +33,71 @@ def create_answer_sheet_4in1(output_path="กระดาษคำตอบ_4in1
     section.left_margin = Cm(0.4)
     section.right_margin = Cm(0.4)
 
-    # 2. Master Table 2x2 (Spanning full page)
+    # 2. Master Table 2x2
     master_table = doc.add_table(rows=2, cols=2)
-    master_table.style = 'Table Grid' # Visible borders for easy cutting
+    master_table.style = 'Table Grid'
     
-    # Set Master Row Height (Exactly 14.3cm as per SKILL.md)
     for row in master_table.rows:
         row.height = Cm(14.3)
 
-    # Fill each cell with an Answer Sheet
+    choices = ['ก', 'ข', 'ค', 'ง']
+
     for r in range(2):
         for c in range(2):
             cell = master_table.cell(r, c)
             cell.vertical_alignment = WD_ALIGN_VERTICAL.TOP
-            set_cell_margins(cell, top=100, start=100, bottom=100, end=100)
             
-            # --- Sheet Content ---
+            # Clear default paragraph
             p_school = cell.paragraphs[0]
             p_school.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_school.paragraph_format.space_before = Pt(0)
+            p_school.paragraph_format.space_after = Pt(0)
             run_school = p_school.add_run("โรงเรียนบ้านแม่ทราย(คุรุราษฎร์เจริญวิทย์)")
             set_font(run_school, size=14, bold=True)
             
             p_info = cell.add_paragraph()
             p_info.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            info_text = "วิชา...................................... ชั้น........ เลขที่........"
-            run_info = p_info.add_run(info_text)
+            p_info.paragraph_format.space_after = Pt(0)
+            run_info = p_info.add_run("วิชา...................................... ชั้น........ เลขที่........")
             set_font(run_info, size=12)
             
             p_name = cell.add_paragraph()
             p_name.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_name.paragraph_format.space_after = Pt(4)
             run_name = p_name.add_run("ชื่อ........................................................................")
             set_font(run_name, size=12)
             
-            # --- Answer Grid Table ---
-            # Create sub-table for answers (e.g. 3 columns of 10 questions)
-            # Layout: [No][A][B][C][D] | [No][A][B][C][D] | [No][A][B][C][D]
-            # To fit 30 questions, let's use 2 columns of 15 questions to save space
+            # --- Answer Grid ---
             rows_count = (num_questions + 1) // 2
-            grid = cell.add_table(rows=rows_count, cols=10) # 2 sets of (No, ก, ข, ค, ง)
+            grid = cell.add_table(rows=rows_count, cols=10) # [No][ก][ข][ค][ง] x 2
             grid.style = 'Table Grid'
             grid.alignment = WD_ALIGN_PARAGRAPH.CENTER
             
-            # Set Grid Row Height (Exactly 0.48cm as per SKILL.md)
             for g_row in grid.rows:
                 g_row.height = Cm(0.48)
             
             for i in range(rows_count):
-                # Set content for Col 1-5 (Questions 1-15)
-                grid.cell(i, 0).text = str(i+1)
-                for j in range(1, 5):
-                    grid.cell(i, j).text = " "
+                # Set Left Column (Q 1-15)
+                q_num = i + 1
+                grid.cell(i, 0).text = str(q_num)
+                for j, choice in enumerate(choices, 1):
+                    grid.cell(i, j).text = choice
                 
-                # Set content for Col 6-10 (Questions 16-30)
-                if i + rows_count < num_questions:
-                    grid.cell(i, 5).text = str(i + rows_count + 1)
-                    for j in range(6, 10):
-                        grid.cell(i, j).text = " "
+                # Set Right Column (Q 16-30)
+                q_num_r = i + rows_count + 1
+                if q_num_r <= num_questions:
+                    grid.cell(i, 5).text = str(q_num_r)
+                    for j, choice in enumerate(choices, 1):
+                        grid.cell(i, 5 + j).text = choice
             
-            # Format Grid Font
+            # Formatting Grid Text
             for g_row in grid.rows:
                 for g_cell in g_row.cells:
                     g_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
                     for p in g_cell.paragraphs:
                         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        p.paragraph_format.space_before = Pt(0)
+                        p.paragraph_format.space_after = Pt(0)
                         if p.runs:
                             set_font(p.runs[0], size=10)
 
