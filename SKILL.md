@@ -50,14 +50,15 @@ To use this skill successfully, the host machine MUST have:
 - **THAI ENCODING (WINDOWS)**: Always use `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8` before shell operations.
 - **MANDATORY UTF8 REDIRECTION**: NEVER use `>` for file redirection on Windows as it breaks Thai characters. ALWAYS use `| Out-File -Encoding UTF8` (e.g., `notebooklm fulltext ... | Out-File -Encoding UTF8 content.txt`).
 - **OPTIONAL ANSWER SHEETS**: DO NOT generate an answer sheet (using `answer_sheet_engine.py`) unless the user explicitly asks for it.
+- **CLEANUP PROTOCOL**: After successfully generating the final `.docx` file, ALWAYS ask the user if they want to delete temporary intermediate files (e.g., `source*.json`, `summary.txt`, `create_*.py`, `sources.json`) to keep the workspace tidy.
 - **KILL THE PAGER**: Never call CLI tools (like `notebooklm`) directly if they support interactive output.
-- **MANDATORY REDIRECTION**: Always redirect output to a file (e.g., `command > file.txt`) to force non-interactive mode and prevent hangs.
+- **MANDATORY REDIRECTION**: Always redirect output to a file (e.g., `command | Out-File -Encoding UTF8 file.txt`) to force non-interactive mode and prevent hangs.
 - **TERMINATE HANGS**: Any command showing signs of interactivity must be cancelled immediately.
 
 ## Workflow: NotebookLM Integration
 When using NotebookLM to generate exams:
 1. **List Sources**: Use `notebooklm source list --notebook [ID]` to identify content.
-2. **Stable Extraction**: Use `notebooklm source fulltext [SOURCE_ID] --notebook [ID] > content.txt` to get raw data. DO NOT use `ask` for large results.
+2. **Stable Extraction**: Use `notebooklm source fulltext [SOURCE_ID] --notebook [ID] | Out-File -Encoding UTF8 content.txt` to get raw data. DO NOT use `ask` for large results.
 3. **AI Reasoning**: Read the extracted text and generate high-quality Thai questions.
 4. **DOCX Build**: Use `docx_engine.py` to create the final document with the official header and tight layout.
 
@@ -90,6 +91,4 @@ When the user asks for a "school project" or "สรุปโครงการ"
   - `project_template.md`: School project structure.
 
 ## ?? Personal References
-- eferences/TeachingSchedule.md: ���ҧ�͹����ش�ͧ�͹ (�ش� �����ͧ)
-
-`n6. **Layout (Answer Sheets)**:`n   - **4-in-1 Eco Mode (PERFECT Edition)**:`n     - **Goal**: 4 sheets per A4 page (2x2 grid), strictly on ONE page.`n     - **Dimensions**: Page Margins 0.4cm, Table Cell Height 14.3cm, Grid Row Height 0.48cm.`n     - **Design**: NO LOGO, Centered Alignment, Only Subject field, TH SarabunPSK font.
+- eferences/TeachingSchedule.md: ҧ͹شͧ͹ (ش ͧ)
