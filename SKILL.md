@@ -5,6 +5,27 @@ description: "Professional Word (.docx) document management. Specialized in A4 s
 
 # Si-Som DOCX Skill
 
+## 🧠 Exam Generation Strategy (Don's Standard)
+When the user asks for an exam, YOU MUST ask (or decide based on context) the desired cognitive level:
+1.  **Remembering (เน้นความจำ)**: Questions based directly on facts, definitions, and knowledge sheets.
+2.  **Scenario-based (เน้นการวิเคราะห์/แก้ปัญหา)**: Questions based on real-life situations (e.g., "If there's a fish surplus in summer with no electricity..."). This measures high-level thinking and practical application.
+3.  **Hybrid (ผสมผสาน)**: A mix of both (Standard: 40% Fact, 60% Analysis).
+
+### 🖋️ Writing Scenario-based Questions:
+- Use local context (e.g., Baan Mae Sai, local products).
+- **NEUTRAL NAMES ONLY**: NEVER use the name 'Don' or the user's name in scenarios. Use random Thai names like สมชาย, มานี, วิชัย, กานดา.
+- **NO AMBIGUITY**: Every question MUST have exactly one academically correct answer. Avoid subjective options like "more challenging" or "better" unless they are clearly defined by a theory (e.g., SMART goals).
+- Focus on "Why" and "How to solve".
+- **Deep Rationale is MANDATORY**: Every answer must have a logical explanation of why it is correct and why other options are less sustainable/effective.
+
+## 🔴 CRITICAL COMPLIANCE RULES (MANDATORY)
+**Before starting any task, you MUST strictly adhere to these rules. Failure to comply will result in broken layouts, incorrect formatting, or unreadable text.**
+1. **Verify Engine Methods:** ALWAYS inspect `scripts/docx_engine.py` to identify valid class methods before writing any Python code. NEVER assume or hallucinate method names (e.g., use the internal `doc` object for standard `add_paragraph()` calls if a specific wrapper doesn't exist).
+2. **Mandatory School Logo:** Every official exam MUST include the Baan Mae Sai school logo located at `assets/Screenshot_8.png`.
+3. **Precise Spacing & Layout:** Strictly follow the Mae Sai spacing standard: Questions (Space Before 6pt), Options (Space Before 0pt), and Line Spacing (1.0) for a compact and professional look.
+4. **Thai Encoding Protocol (Windows):** To prevent Mojibake, ALWAYS use `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8` before shell operations and `| Out-File -Encoding UTF8` for file redirection. In Python, always specify `encoding='utf-8'`. NEVER use `>`.
+5. **Complete Answer Key:** Every exam MUST conclude with a comprehensive Answer Key section featuring a 5-column summary table AND detailed academic explanations for every single question.
+
 ## Overview
 A specialized skill for creating professional Word documents, particularly tailored for educational exams and school reports.
 
