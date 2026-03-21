@@ -84,6 +84,19 @@ class SiSomDocxEngine:
         run_inst.bold = True
         self.doc.add_paragraph("") # Spacer
 
+    def add_question(self, question_text, options):
+        """Add a bold question and its options with proper Mae Sai spacing (6pt/0pt)."""
+        # Add Question (Bold, Space Before 6pt)
+        p_q = self.doc.add_paragraph()
+        p_q.paragraph_format.space_before = Pt(6)
+        run_q = p_q.add_run(question_text)
+        run_q.bold = True
+        
+        # Add Options (Normal, Space Before 0pt)
+        for opt in options:
+            p_opt = self.doc.add_paragraph(opt)
+            p_opt.paragraph_format.space_before = Pt(0)
+
     def add_answer_key_table(self, answers):
         """Create a grid table for answer keys (5 columns)."""
         self.doc.add_section(WD_SECTION.NEW_PAGE)
@@ -113,6 +126,19 @@ class SiSomDocxEngine:
             cols = cols[0]
         cols.set(qn('w:num'), '2')
         cols.set(qn('w:space'), '720') # 0.5 inch gap
+        return new_section
+
+    def set_1_column(self):
+        """Reset to 1 column layout."""
+        new_section = self.doc.add_section(WD_SECTION.NEW_PAGE)
+        sectPr = new_section._sectPr
+        cols = sectPr.xpath('./w:cols')
+        if not cols:
+            cols = OxmlElement('w:cols')
+            sectPr.append(cols)
+        else:
+            cols = cols[0]
+        cols.set(qn('w:num'), '1')
         return new_section
 
     def add_header_center(self, text, bold=False):
