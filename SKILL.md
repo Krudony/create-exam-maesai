@@ -15,6 +15,10 @@ When the user asks for an exam, YOU MUST ask (or decide based on context) the de
 - Use local context (e.g., Baan Mae Sai, local products).
 - **NEUTRAL NAMES ONLY**: NEVER use the name 'Don' or the user's name in scenarios. Use random Thai names like สมชาย, มานี, วิชัย, กานดา.
 - **NO AMBIGUITY**: Every question MUST have exactly one academically correct answer. Avoid subjective options like "more challenging" or "better" unless they are clearly defined by a theory (e.g., SMART goals).
+- **STRICT ANSWER VARIETY (MANDATORY)**: 
+    - **Distribution**: You MUST distribute correct answers (ก, ข, ค, ง) almost equally (approx. 25% each).
+    - **No Streaks**: NEVER have the same correct option (e.g., 'ข') for more than 3 consecutive questions.
+    - **Option Randomization**: ALWAYS shuffle the positions of the correct answers during generation to avoid patterns or bias.
 - Focus on "Why" and "How to solve".
 - **Deep Rationale is MANDATORY**: Every answer must have a logical explanation of why it is correct and why other options are less sustainable/effective.
 
